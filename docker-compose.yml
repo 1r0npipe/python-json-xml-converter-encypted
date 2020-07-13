@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  conta:
+    image: conta
+    build:
+      context: .
+      dockerfile: cont_a/Dockerfile
+  contb:
+    image: contb
+    build:
+      context: .
+      dockerfile: cont_b/Dockerfile
+  
