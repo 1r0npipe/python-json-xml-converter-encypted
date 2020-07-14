@@ -6,9 +6,27 @@ services:
     build:
       context: .
       dockerfile: cont_a/Dockerfile
+    networks:
+      - test_network
+    ports:
+      - '9999'
+    expose:
+      - '9999'
+
   contb:
+    depends_on:
+      - conta
     image: contb
     build:
       context: .
       dockerfile: cont_b/Dockerfile
-  
+    networks:
+      - test_network
+    ports:
+      - '9999'
+    expose:
+      - '9999'
+
+networks:
+  test_network:
+    driver: bridge
