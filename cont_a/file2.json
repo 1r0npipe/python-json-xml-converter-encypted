@@ -1,0 +1,35 @@
+{
+  "coord": { "lon": -8.62, "lat": 52.66 },
+  "weather": [
+    {
+      "id": 803,
+      "main": "Clouds",
+      "description": "broken clouds",
+      "icon": "04d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 287.86,
+    "feels_like": 285.23,
+    "temp_min": 287.59,
+    "temp_max": 288.15,
+    "pressure": 1021,
+    "humidity": 77
+  },
+  "visibility": 10000,
+  "wind": { "speed": 4.1, "deg": 290 },
+  "clouds": { "all": 75 },
+  "dt": 1594667542,
+  "sys": {
+    "type": 1,
+    "id": 1569,
+    "country": "IE",
+    "sunrise": 1594614414,
+    "sunset": 1594673592
+  },
+  "timezone": 3600,
+  "id": 2962943,
+  "name": "Limerick",
+  "cod": 200
+}
