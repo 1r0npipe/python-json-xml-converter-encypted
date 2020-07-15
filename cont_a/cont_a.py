@@ -16,11 +16,13 @@ if __name__ == "__main__":
 
     key = os.getenv('KEY_ENCRYPT')
     key = Fernet.generate_key()
-    print('KEY = ',key)
+    with open("secret.key", "wb") as key_file:
+        key_file.write(key)
+
     try:
         # reading the content of file
         json_files = open('json_list.txt', 'r')
-
+        fernet = Fernet(key)
         for file_json in json_files.readlines():
             if not file_json.startswith("#"):
                 try:
@@ -30,12 +32,12 @@ if __name__ == "__main__":
                     data = readfromstring(json_out)
                     xml_out = json2xml.Json2xml(data, wrapper="all", pretty=True, attr_type=False).to_xml()
                     xml_out_encode = xml_out.encode()
-                    fernet = Fernet(key)
+                    
                     xml_encrypted = fernet.encrypt(xml_out_encode)
                     xml_content['id'] = str(count_files)
                     xml_content['file'] = str(xml_encrypted)
+                    xml_content['filename'] = file_json.strip().replace('json','xml')
                     xml_content_arr.append(xml_content.copy())
-                    
                     #xml_file = open('file' + str(i) + '.xml', 'w')
                     #xml_file.write(str(xml_encrypted))
                     count_files = count_files + 1
@@ -52,6 +54,7 @@ if __name__ == "__main__":
     finally:
         json_files.close()
 
+        
     @web_app.route('/numbers', methods=['GET'])
     def numbers():
         json_output = '{\'file_number\':'  + str(count_files) + '}'
@@ -60,6 +63,6 @@ if __name__ == "__main__":
     def file_id():
         json_output = xml_content_arr
         return jsonify(json_output)
-   
+
     web_app.run()
 

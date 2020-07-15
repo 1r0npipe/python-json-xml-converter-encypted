@@ -9,9 +9,9 @@ services:
     networks:
       - test_network
     ports:
-      - '9999'
+      - '5000'
     expose:
-      - '9999'
+      - '5000'
 
   contb:
     depends_on:
@@ -22,10 +22,6 @@ services:
       dockerfile: cont_b/Dockerfile
     networks:
       - test_network
-    ports:
-      - '9999'
-    expose:
-      - '9999'
 
 networks:
   test_network:
