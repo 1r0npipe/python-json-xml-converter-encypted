@@ -1,8 +1,8 @@
-import os
+#import os
 import requests
 from cryptography.fernet import Fernet
 
-TOKEN = os.getenv('KEY_TOKEN')
+#TOKEN = os.getenv('KEY_TOKEN')
 URL_FILES = 'http://127.0.0.1:5000/files'
 URL_NUMBER = 'http://127.0.0.1:5000/numbers'
 SUCCESS_CODE = 200
@@ -13,19 +13,27 @@ def upload_key():
 
 if __name__ == "__main__":
 
-    request_files = requests.get(URL_FILES)
-    if request_files.status_code == SUCCESS_CODE:
+    try:
+        request_files = requests.get(URL_FILES)
+        if request_files.status_code == SUCCESS_CODE:
             data_array = request_files.json()
-    
+        else:
+            print("Bad request, no data migt be getting from the remote host(cont_a)")
+    except:
+        print("Something goes wrong with remote connection, dropped...")
+        exit()
+
     key = upload_key()
     fernet_ = Fernet(key)
 
     
     for xml_file in data_array:
+        file_xml = open(xml_file['filename'],'w')
         xml_file = bytes(xml_file['file'][2:len(xml_file['file'])-1], encoding='utf-8')
         decrypted_message = fernet_.decrypt(xml_file)
-        print(decrypted_message.decode())
-
+        file_xml.write(decrypted_message.decode())
+        file_xml.close()
+        
 
     #num_files = requests.get(URL_NUMBER)
     #if num_files.status_code == SUCCESS_CODE:
