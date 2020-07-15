@@ -55,10 +55,11 @@ if __name__ == "__main__":
         json_files.close()
 
         
-    @web_app.route('/numbers', methods=['GET'])
-    def numbers():
-        json_output = '{\'file_number\':'  + str(count_files) + '}'
-        return jsonify(json_output)
+    #@web_app.route('/numbers', methods=['GET'])
+    #def numbers():
+    #    json_output = '{\'file_number\':'  + str(count_files) + '}'
+    #    return jsonify(json_output)
+    
     @web_app.route('/files', methods=['GET'])
     def file_id():
         json_output = xml_content_arr
