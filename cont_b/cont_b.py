@@ -2,9 +2,8 @@
 import requests
 from cryptography.fernet import Fernet
 
-#TOKEN = os.getenv('KEY_TOKEN')
+
 URL_FILES = 'http://conta:5000/files'
-URL_NUMBER = 'http://conta:5000/numbers'
 SUCCESS_CODE = 200
 data_array = []
 
@@ -33,9 +32,3 @@ if __name__ == "__main__":
         decrypted_message = fernet_.decrypt(xml_file)
         file_xml.write(decrypted_message.decode())
         file_xml.close()
-        
-
-    #num_files = requests.get(URL_NUMBER)
-    #if num_files.status_code == SUCCESS_CODE:
-    #        num_files = num_files.json()
-    #        print(num_files[1])
