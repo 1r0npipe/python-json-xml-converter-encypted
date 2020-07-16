@@ -2,14 +2,13 @@
 import requests
 from cryptography.fernet import Fernet
 
-#TOKEN = os.getenv('KEY_TOKEN')
-URL_FILES = 'http://127.0.0.1:5000/files'
-URL_NUMBER = 'http://127.0.0.1:5000/numbers'
+
+URL_FILES = 'http://conta:5000/files'
 SUCCESS_CODE = 200
 data_array = []
 
 def upload_key():
-    return open("secret.key", "rb").read()
+    return open("/shared/secret.key", "rb").read()
 
 if __name__ == "__main__":
 
@@ -28,14 +27,8 @@ if __name__ == "__main__":
 
     
     for xml_file in data_array:
-        file_xml = open(xml_file['filename'],'w')
+        file_xml = open('/shared/' + xml_file['filename'],'w')
         xml_file = bytes(xml_file['file'][2:len(xml_file['file'])-1], encoding='utf-8')
         decrypted_message = fernet_.decrypt(xml_file)
         file_xml.write(decrypted_message.decode())
         file_xml.close()
-        
-
-    #num_files = requests.get(URL_NUMBER)
-    #if num_files.status_code == SUCCESS_CODE:
-    #        num_files = num_files.json()
-    #        print(num_files[1])
