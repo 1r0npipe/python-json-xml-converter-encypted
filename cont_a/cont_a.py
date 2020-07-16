@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     key = os.getenv('KEY_ENCRYPT')
     key = Fernet.generate_key()
-    with open("secret.key", "wb") as key_file:
+    with open("/shared/secret.key", "wb") as key_file:
         key_file.write(key)
 
     try:
@@ -65,5 +65,5 @@ if __name__ == "__main__":
         json_output = xml_content_arr
         return jsonify(json_output)
 
-    web_app.run()
+    web_app.run(host='0.0.0.0')
 

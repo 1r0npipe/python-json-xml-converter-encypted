@@ -12,6 +12,8 @@ services:
       - '5000'
     expose:
       - '5000'
+    volumes:
+      - shared:/shared:consistent
 
   contb:
     depends_on:
@@ -22,7 +24,12 @@ services:
       dockerfile: cont_b/Dockerfile
     networks:
       - test_network
+    volumes:
+      - shared:/shared:consistent
 
 networks:
   test_network:
     driver: bridge
+volumes:
+  shared:
+    external: true
