@@ -8,6 +8,7 @@ from flask import request, jsonify
 
 xml_content = dict()
 xml_content_arr = []
+count_files = 0
 
 if __name__ == "__main__":
     web_app = flask.Flask(__name__)
