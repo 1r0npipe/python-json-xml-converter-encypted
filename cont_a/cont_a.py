@@ -1,4 +1,5 @@
 import os
+import glob
 import json
 from json2xml import json2xml
 from json2xml.utils import readfromstring
@@ -6,17 +7,42 @@ from cryptography.fernet import Fernet
 import flask
 from flask import request, jsonify
 
+
 xml_content = dict()
 xml_content_arr = []
 count_files = 0
 
+
+def rescan_json():
+    list_json_files = glob.glob('/shared/*.json')
+    return list_json_files
+
+def refresh():
+    json_files = rescan_json()
+    for json_file in json_files:
+        file_json = open(json_file, 'r')
+        json_out = str(json.load(file_json)).replace('\'', '\"')  
+        data = readfromstring(json_out)
+        xml_out = json2xml.Json2xml(data, wrapper="all", pretty=True, attr_type=False).to_xml()
+        xml_out_encode = xml_out.encode()
+        xml_encrypted = fernet.encrypt(xml_out_encode)
+        xml_content['id'] = str(count_files)
+        xml_content['file'] = str(xml_encrypted)
+        xml_content['filename'] = file_json.strip().replace('json','xml')
+        xml_content_arr.append(xml_content.copy())
+        count_files = count_files + 1
+        file_json.close()
+        os.remove(json_file)
+
 if __name__ == "__main__":
+
     web_app = flask.Flask(__name__)
     web_app.config['DEBUG'] = True # for debugging 
 
     key = os.getenv('KEY_ENCRYPT')
     key = Fernet.generate_key()
-    with open("/shared/secret.key", "wb") as key_file:
+    #with open("/shared/secret.key", "wb") as key_file:
+    with open("secret.key", "wb") as key_file:
         key_file.write(key)
 
     try:
@@ -36,6 +62,7 @@ if __name__ == "__main__":
                     xml_content['file'] = str(xml_encrypted)
                     xml_content['filename'] = file_json.strip().replace('json','xml')
                     xml_content_arr.append(xml_content.copy())
+                    count_files = count_files + 1
                 except:
                     print("File - " + file_json + " cannot be opened")
                     exit()
@@ -49,10 +76,10 @@ if __name__ == "__main__":
     finally:
         json_files.close()
 
-    @web_app.route('/files', methods=['GET'])
+    @web_app.route('/files', methods=['GET'], view_func = refresh())
     def file_id():
         json_output = xml_content_arr
         return jsonify(json_output)
-
+    
     web_app.run(host='0.0.0.0')
 
