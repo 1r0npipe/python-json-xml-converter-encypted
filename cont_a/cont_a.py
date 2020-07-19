@@ -11,7 +11,7 @@ xml_content_arr = []
 
 if __name__ == "__main__":
     web_app = flask.Flask(__name__)
-    web_app.config['DEBUG'] = True
+    web_app.config['DEBUG'] = True # for debugging 
 
     key = os.getenv('KEY_ENCRYPT')
     key = Fernet.generate_key()
