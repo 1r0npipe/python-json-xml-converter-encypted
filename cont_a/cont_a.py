@@ -36,6 +36,7 @@ if __name__ == "__main__":
                     xml_content['file'] = str(xml_encrypted)
                     xml_content['filename'] = file_json.strip().replace('json','xml')
                     xml_content_arr.append(xml_content.copy())
+                    count_files = count_files + 1
                 except:
                     print("File - " + file_json + " cannot be opened")
                     exit()
